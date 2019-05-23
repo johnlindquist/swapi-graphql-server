@@ -2,6 +2,21 @@ const { gql } = require("apollo-server")
 
 module.exports = gql`
   type Query {
+    person(id: Int!): Person
+    planet(id: Int!): Planet
+    film(id: Int!): Film
+    transport(id: Int!): Transport
+    starship(id: Int!): Starship
+    vehicle(id: Int!): Vehicle
+
+    searchPeopleByName(search: String!): [Person]
+    searchStarshipsByName(search: String!): [Starship]
+    searchTransportsByName(search: String!): [Transport]
+    searchSpeciesByName(search: String!): [Species]
+    searchVehiclesByName(search: String!): [Vehicle]
+    searchPlanetsByName(search: String!): [Planet]
+    searchFilmsByTitle(search: String!): [Film]
+
     allFilms: [Film]
     allStarships: [Starship]
     allPeople: [Person]

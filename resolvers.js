@@ -21,9 +21,9 @@ function vehicles(parent, args, { models }) {
     .filter(({ id }) => parent.vehicles.includes(id))
 }
 
-function starships(parent, args, { models }) {
+function transports(parent, args, { models }) {
   return models
-    .getData("/starships")
+    .getData("/transports")
     .filter(({ id }) => parent.starships.includes(id))
 }
 
@@ -43,9 +43,77 @@ function homeworld(parent, args, { models }) {
     .getData("/planets")
     .find(planet => planet.id === parent.homeworld)
 }
+function person(parent, { id }, { models }) {
+  return models.getData("/people").find(person => person.id === id)
+}
+function planet(parent, { id }, { models }) {
+  return models.getData("/planets").find(planet => planet.id === id)
+}
+function film(parent, { id }, { models }) {
+  return models.getData("/films").find(film => film.id === id)
+}
+function starship(parent, { id }, { models }) {
+  return models.getData("/starships").find(starship => starship.id === id)
+}
+function transport(parent, { id }, { models }) {
+  return models.getData("/transports").find(transport => transport.id === id)
+}
+function vehicle(parent, { id }, { models }) {
+  return models.getData("/vehicles").find(vehicle => vehicle.id === id)
+}
+
+function searchPeopleByName(parent, { search }, { models }) {
+  return models
+    .getData("/people")
+    .filter(person => new RegExp(search, "i").test(person.name))
+}
+function searchPlanetsByName(parent, { search }, { models }) {
+  return models
+    .getData("/planets")
+    .filter(planet => new RegExp(search, "i").test(planet.name))
+}
+function searchFilmsByTitle(parent, { search }, { models }) {
+  return models
+    .getData("/films")
+    .filter(film => new RegExp(search, "i").test(film.title))
+}
+function searchSpeciesByName(parent, { search }, { models }) {
+  return models
+    .getData("/species")
+    .filter(species => new RegExp(search, "i").test(species.name))
+}
+function searchStarshipsByName(parent, { search }, { models }) {
+  return models
+    .getData("/starships")
+    .filter(starship => new RegExp(search, "i").test(starship.name))
+}
+function searchVehiclesByName(parent, { search }, { models }) {
+  return models
+    .getData("/vehicles")
+    .filter(vehicle => new RegExp(search, "i").test(vehicle.name))
+}
+function searchTransportsByName(parent, { search }, { models }) {
+  return models
+    .getData("/transports")
+    .filter(transport => new RegExp(search, "i").test(transport.name))
+}
 
 const resolvers = {
   Query: {
+    person,
+    planet,
+    film,
+    transport,
+    starship,
+    vehicle,
+    searchPeopleByName,
+    searchStarshipsByName,
+    searchTransportsByName,
+    searchSpeciesByName,
+    searchVehiclesByName,
+    searchPlanetsByName,
+    searchFilmsByTitle,
+
     allStarships(parent, { id }, { models }) {
       return models.getData("/starships")
     },
