@@ -1,10 +1,10 @@
 {
-  "name": "swapi-json-server",
+  "name": "swapi-graphql-server",
   "bin": "./bin/app.js",
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/johnlindquist/swapi-json-server.git"
+    "url": "git+https://github.com/johnlindquist/swapi-graphql-server.git"
   },
   "version": "1.0.2",
   "description": "",
