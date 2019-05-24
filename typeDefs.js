@@ -1,7 +1,18 @@
 const { gql } = require("apollo-server")
 
 module.exports = gql`
+  union SearchResult =
+      Person
+    | Starship
+    | Transport
+    | Species
+    | Vehicle
+    | Planet
+    | Film
+
   type Query {
+    search(search: String): [SearchResult]
+
     person(id: Int!): Person
     planet(id: Int!): Planet
     film(id: Int!): Film

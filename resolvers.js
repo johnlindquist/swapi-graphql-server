@@ -23,7 +23,7 @@ function vehicles(parent, args, { models }) {
 
 function transports(parent, args, { models }) {
   return models
-    .getData("/transports")
+    .getData("/transport")
     .filter(({ id }) => parent.starships.includes(id))
 }
 
@@ -56,7 +56,7 @@ function starship(parent, { id }, { models }) {
   return models.getData("/starships").find(starship => starship.id === id)
 }
 function transport(parent, { id }, { models }) {
-  return models.getData("/transports").find(transport => transport.id === id)
+  return models.getData("/transport").find(transport => transport.id === id)
 }
 function vehicle(parent, { id }, { models }) {
   return models.getData("/vehicles").find(vehicle => vehicle.id === id)
@@ -94,12 +94,46 @@ function searchVehiclesByName(parent, { search }, { models }) {
 }
 function searchTransportsByName(parent, { search }, { models }) {
   return models
-    .getData("/transports")
+    .getData("/transport")
     .filter(transport => new RegExp(search, "i").test(transport.name))
 }
 
 const resolvers = {
+  SearchResult: {
+    __resolveType(parent, args, info) {
+      console.log({ parent })
+      return parent.__typename
+    }
+  },
   Query: {
+    search(parent, { search }, { models }) {
+      const result = [
+        ...searchFilmsByTitle(parent, { search }, { models }).map(
+          r => (r.__typename = "Film") && r
+        ),
+        ...searchPeopleByName(parent, { search }, { models }).map(
+          r => (r.__typename = "Person") && r
+        ),
+        ...searchPlanetsByName(parent, { search }, { models }).map(
+          r => (r.__typename = "Planet") && r
+        ),
+        ...searchSpeciesByName(parent, { search }, { models }).map(
+          r => (r.__typename = "Species") && r
+        ),
+        ...searchStarshipsByName(parent, { search }, { models }).map(
+          r => (r.__typename = "Starship") && r
+        ),
+        ...searchTransportsByName(parent, { search }, { models }).map(
+          r => (r.__typename = "Transport") && r
+        ),
+        ...searchVehiclesByName(parent, { search }, { models }).map(
+          r => (r.__typename = "Vehicle") && r
+        )
+      ]
+
+      return result
+    },
+
     person,
     planet,
     film,
@@ -114,22 +148,22 @@ const resolvers = {
     searchPlanetsByName,
     searchFilmsByTitle,
 
-    allStarships(parent, { id }, { models }) {
+    allStarships(parent, args, { models }) {
       return models.getData("/starships")
     },
-    allFilms(parent, { id }, { models }) {
+    allFilms(parent, args, { models }) {
       return models.getData("/films")
     },
-    allPeople(parent, { id }, { models }) {
+    allPeople(parent, args, { models }) {
       return models.getData("/people")
     },
-    allPlanets(parent, { id }, { models }) {
+    allPlanets(parent, args, { models }) {
       return models.getData("/planets")
     },
-    allSpecies(parent, { id }, { models }) {
+    allSpecies(parent, args, { models }) {
       return models.getData("/species")
     },
-    allTransports(parent, { id }, { models }) {
+    allTransports(parent, args, { models }) {
       return models.getData("/transport")
     }
   },
